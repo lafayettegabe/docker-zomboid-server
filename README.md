@@ -15,8 +15,6 @@ This project provides a fully automated setup for running a Project Zomboid dedi
 
 2. Create a `docker-compose.yml` file with the following content:
    ```yml
-   version: '3.8'
-
    services:
      zomboid-server:
        image: lafayettegabe/docker-zomboid-server:latest
