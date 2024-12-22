@@ -1,0 +1,53 @@
+FROM debian:bookworm
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    software-properties-common \
+    wget \
+    gnupg \
+    ca-certificates \
+    lib32gcc-s1 \
+    jq \
+    curl
+
+RUN echo "deb http://deb.debian.org/debian/ bookworm non-free" >> /etc/apt/sources.list && \
+    dpkg --add-architecture i386 && \
+    apt-get update -y
+
+RUN echo "steam steam/license note" | debconf-set-selections && \
+    echo "steam steam/question select I AGREE" | debconf-set-selections
+
+RUN apt-get install -y steamcmd
+
+RUN useradd -m pzuser
+
+RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
+    /home/pzuser/Zomboid/backups/version /home/pzuser/Zomboid/db /home/pzuser/Zomboid/Server && \
+    chown -R pzuser:pzuser /opt/pzserver /home/pzuser/Zomboid
+
+COPY update-config.sh /home/pzuser/update-config.sh
+RUN chmod +x /home/pzuser/update-config.sh
+
+COPY servertest.ini /home/pzuser/Zomboid/Server/servertest.ini
+RUN chown pzuser:pzuser /home/pzuser/Zomboid/Server/servertest.ini && \
+    chmod 755 /home/pzuser/Zomboid/Server/servertest.ini
+
+RUN chmod -R 777 /home/pzuser/Zomboid/Server
+
+USER pzuser
+
+RUN echo "// update_zomboid.txt\n\
+@ShutdownOnFailedCommand 1\n\
+@NoPromptForPassword 1\n\
+force_install_dir /opt/pzserver/\n\
+login anonymous\n\
+app_update 380870 validate\n\
+quit" > /home/pzuser/update_zomboid.txt
+
+RUN export PATH=$PATH:/usr/games && \
+    steamcmd +runscript /home/pzuser/update_zomboid.txt
+
+EXPOSE 16261/udp 16262/udp
+
+CMD ["bash", "-c", "/home/pzuser/update-config.sh && cd /opt/pzserver && ./start-server.sh -adminpassword password"]

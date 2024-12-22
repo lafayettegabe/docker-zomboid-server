@@ -1,0 +1,14 @@
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.zomboid
+    environment:
+      - SERVER_NAME=DockerServer
+      - SERVER_DESCRIPTION=A description for the server!
+      - SERVER_MODS_COLLECTION_URL=https://steamcommunity.com/sharedfiles/filedetails/?id=3388931496
+      - SERVER_PASSWORD=password
+    ports:
+      - "16261:16261/udp"
+      - "16262:16262/udp"
+    restart: unless-stopped
