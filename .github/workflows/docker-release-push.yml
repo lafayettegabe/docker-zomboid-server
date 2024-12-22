@@ -28,9 +28,4 @@ jobs:
           context: .
           file: Dockerfile.zomboid
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:${{ github.ref_name }}
-
-      - name: Tag image with 'latest'
-        run: |
-          docker tag ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:${{ github.ref_name }} ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:latest
-          docker push ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:${{ github.ref_name }},${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:latest
