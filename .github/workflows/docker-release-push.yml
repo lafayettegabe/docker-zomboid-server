@@ -26,8 +26,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
+          file: Dockerfile.zomboid
           push: true
-          dockerfile: Dockerfile.zomboid
           tags: ${{ secrets.DOCKER_USERNAME }}/docker-zomboid-server:${{ github.ref_name }}
 
       - name: Tag image with 'latest'
