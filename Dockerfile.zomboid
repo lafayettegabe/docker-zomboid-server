@@ -26,8 +26,8 @@ RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
     /home/pzuser/Zomboid/backups/version /home/pzuser/Zomboid/db /home/pzuser/Zomboid/Server && \
     chown -R pzuser:pzuser /opt/pzserver /home/pzuser/Zomboid
 
-COPY update-config.sh /home/pzuser/update-config.sh
-RUN chmod +x /home/pzuser/update-config.sh
+COPY main.sh /home/pzuser/main.sh
+RUN chmod +x /home/pzuser/main.sh
 
 COPY servertest.ini /home/pzuser/Zomboid/Server/servertest.ini
 RUN chown pzuser:pzuser /home/pzuser/Zomboid/Server/servertest.ini && \
@@ -50,4 +50,4 @@ RUN export PATH=$PATH:/usr/games && \
 
 EXPOSE 16261/udp 16262/udp
 
-CMD ["bash", "-c", "/home/pzuser/update-config.sh && cd /opt/pzserver && ./start-server.sh -adminpassword password"]
+ENTRYPOINT ["/home/pzuser/main.sh"]
