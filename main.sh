@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="/home/root/Zomboid/Server/servertest.ini"
+CONFIG_FILE="/root/Zomboid/Server/servertest.ini"
 
 log_info() {
   echo "INFO: $1"
@@ -14,7 +14,8 @@ log_error() {
 create_config_file() {
   if [ ! -f "$CONFIG_FILE" ]; then
     log_info "Configuration file not found. Creating a new one at $CONFIG_FILE."
-    cat <<EOL >"$CONFIG_FILE"
+    mkdir -p "$(dirname "$CONFIG_FILE")"
+    cat >"$CONFIG_FILE" <<EOF
 [General]
 PublicName=DefaultServerName
 PublicDescription=Default server description
@@ -42,11 +43,8 @@ SleepNeeded=true
 SteamScoreboard=admin
 PlayerBumpPlayer=true
 HoursForLootRespawn=1000
-EOL
-    chown pzuser:pzuser "$CONFIG_FILE"
+EOF
     chmod 644 "$CONFIG_FILE"
-  else
-    log_info "Configuration file already exists: $CONFIG_FILE"
   fi
 }
 
@@ -60,7 +58,6 @@ update_config() {
 }
 
 log_info "Starting configuration updates..."
-
 create_config_file
 
 log_info "SERVER_NAME=$SERVER_NAME"
@@ -85,7 +82,6 @@ if [ -n "$SERVER_MODS_COLLECTION_URL" ]; then
 fi
 
 log_info "Configuration updates complete."
-
 log_info "Logging the contents of the updated configuration file ($CONFIG_FILE):"
 cat "$CONFIG_FILE"
 
