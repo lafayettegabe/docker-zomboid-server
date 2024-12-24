@@ -11,6 +11,45 @@ log_error() {
   exit 1
 }
 
+create_config_file() {
+  if [ ! -f "$CONFIG_FILE" ]; then
+    log_info "Configuration file not found. Creating a new one at $CONFIG_FILE."
+    cat <<EOL >"$CONFIG_FILE"
+[General]
+PublicName=DefaultServerName
+PublicDescription=Default server description
+Password=
+Mods=
+WorkshopItems=
+Public=true
+PVP=true
+PauseEmpty=true
+GlobalChat=true
+Open=true
+DisplayUserName=false
+NoFire=false
+AnnounceDeath=true
+MinutesPerPage=0.1
+PlayerSafehouse=true
+SafehouseAllowTrepass=false
+SafehouseAllowFire=false
+SafehouseAllowLoot=false
+SafehouseAllowRespawn=true
+SafehouseDaySurvivedToClaim=0
+SafeHouseRemovalTime=72
+SleepAllowed=true
+SleepNeeded=true
+SteamScoreboard=admin
+PlayerBumpPlayer=true
+HoursForLootRespawn=1000
+EOL
+    chown pzuser:pzuser "$CONFIG_FILE"
+    chmod 644 "$CONFIG_FILE"
+  else
+    log_info "Configuration file already exists: $CONFIG_FILE"
+  fi
+}
+
 update_config() {
   local key="$1"
   local value="$2"
@@ -21,6 +60,8 @@ update_config() {
 }
 
 log_info "Starting configuration updates..."
+
+create_config_file
 
 log_info "SERVER_NAME=$SERVER_NAME"
 log_info "SERVER_DESCRIPTION=$SERVER_DESCRIPTION"

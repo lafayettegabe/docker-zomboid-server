@@ -29,10 +29,6 @@ RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
 COPY main.sh /home/pzuser/main.sh
 RUN chmod +x /home/pzuser/main.sh
 
-COPY servertest.ini /home/pzuser/Zomboid/Server/servertest.ini
-RUN chown pzuser:pzuser /home/pzuser/Zomboid/Server/servertest.ini && \
-    chmod 755 /home/pzuser/Zomboid/Server/servertest.ini
-
 RUN chmod -R 777 /home/pzuser/Zomboid/Server
 
 USER pzuser
