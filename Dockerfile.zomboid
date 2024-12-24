@@ -20,19 +20,14 @@ RUN echo "steam steam/license note" | debconf-set-selections && \
 
 RUN apt-get install -y steamcmd
 
-RUN useradd -m pzuser
-
 RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
     /home/pzuser/Zomboid/backups/version /home/pzuser/Zomboid/db /home/pzuser/Zomboid/Server && \
-    chown -R pzuser:pzuser /opt/pzserver /home/pzuser/Zomboid && \
     chmod -R 755 /home/pzuser/Zomboid
 
 COPY main.sh /home/pzuser/main.sh
 RUN chmod +x /home/pzuser/main.sh
 
 RUN chmod -R 777 /home/pzuser/Zomboid/Server
-
-USER pzuser
 
 RUN echo "// update_zomboid.txt\n\
 @ShutdownOnFailedCommand 1\n\
