@@ -24,7 +24,8 @@ RUN useradd -m pzuser
 
 RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
     /home/pzuser/Zomboid/backups/version /home/pzuser/Zomboid/db /home/pzuser/Zomboid/Server && \
-    chown -R pzuser:pzuser /opt/pzserver /home/pzuser/Zomboid
+    chown -R pzuser:pzuser /opt/pzserver /home/pzuser/Zomboid && \
+    chmod -R 755 /home/pzuser/Zomboid
 
 COPY main.sh /home/pzuser/main.sh
 RUN chmod +x /home/pzuser/main.sh
