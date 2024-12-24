@@ -20,14 +20,14 @@ RUN echo "steam steam/license note" | debconf-set-selections && \
 
 RUN apt-get install -y steamcmd
 
-RUN mkdir -p /opt/pzserver /home/pzuser/Zomboid/backups/startup \
-    /home/pzuser/Zomboid/backups/version /home/pzuser/Zomboid/db /home/pzuser/Zomboid/Server && \
-    chmod -R 755 /home/pzuser/Zomboid
+RUN mkdir -p /opt/pzserver /root/Zomboid/backups/startup \
+    /root/Zomboid/backups/version /root/Zomboid/db /root/Zomboid/Server && \
+    chmod -R 755 /root/Zomboid
 
-COPY main.sh /home/pzuser/main.sh
-RUN chmod +x /home/pzuser/main.sh
+COPY main.sh /root/main.sh
+RUN chmod +x /root/main.sh
 
-RUN chmod -R 777 /home/pzuser/Zomboid/Server
+RUN chmod -R 777 /root/Zomboid/Server
 
 RUN echo "// update_zomboid.txt\n\
 @ShutdownOnFailedCommand 1\n\
@@ -35,11 +35,11 @@ RUN echo "// update_zomboid.txt\n\
 force_install_dir /opt/pzserver/\n\
 login anonymous\n\
 app_update 380870 validate\n\
-quit" > /home/pzuser/update_zomboid.txt
+quit" > /root/update_zomboid.txt
 
 RUN export PATH=$PATH:/usr/games && \
-    steamcmd +runscript /home/pzuser/update_zomboid.txt
+    steamcmd +runscript /root/update_zomboid.txt
 
 EXPOSE 16261/udp 16262/udp
 
-ENTRYPOINT ["/home/pzuser/main.sh"]
+ENTRYPOINT ["/root/main.sh"]

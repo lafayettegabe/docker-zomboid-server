@@ -1,6 +1,6 @@
 #!/bin/bash
 
-CONFIG_FILE="/home/pzuser/Zomboid/Server/servertest.ini"
+CONFIG_FILE="/home/root/Zomboid/Server/servertest.ini"
 
 log_info() {
   echo "INFO: $1"
