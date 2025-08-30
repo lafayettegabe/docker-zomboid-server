@@ -51,10 +51,18 @@ EOF
 update_config() {
   local key="$1"
   local value="$2"
-  if [ -n "$value" ]; then
-    log_info "Updating $key to $value"
+  if grep -q "^$key=" "$CONFIG_FILE"; then
     sed -i "s/^$key=.*/$key=${value}/" "$CONFIG_FILE"
+  else
+    echo "$key=$value" >> "$CONFIG_FILE"
   fi
+}
+
+disable_anticheats() {
+  log_info "Disabling all anti-cheat protections..."
+  for i in $(seq 1 20); do
+    update_config "AntiCheatProtectionType$i" "false"
+  done
 }
 
 log_info "Starting configuration updates..."
@@ -80,6 +88,8 @@ if [ -n "$SERVER_MODS_COLLECTION_URL" ]; then
   update_config "Mods" "$MODS"
   update_config "WorkshopItems" "$WORKSHOP_ITEMS"
 fi
+
+disable_anticheats
 
 log_info "Configuration updates complete."
 log_info "Logging the contents of the updated configuration file ($CONFIG_FILE):"
