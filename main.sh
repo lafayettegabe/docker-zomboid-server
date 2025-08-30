@@ -60,7 +60,7 @@ update_config() {
 
 disable_anticheats() {
   log_info "Disabling all anti-cheat protections..."
-  for i in $(seq 1 20); do
+  for i in $(seq 1 22); do
     update_config "AntiCheatProtectionType$i" "false"
   done
 }
